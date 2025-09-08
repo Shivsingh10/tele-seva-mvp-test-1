@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'common_login.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -43,8 +44,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     // Navigate to next screen after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
-        // TODO: Navigate to login page
-        // Navigator.pushReplacementNamed(context, '/login');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const CommonLoginPage()),
+        );
       }
     });
   }
@@ -77,7 +80,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                       margin: const EdgeInsets.only(bottom: 24),
                       child: Container(
                         decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 77, 42, 234), // Primary red color
+                          color: Color.fromARGB(
+                            255,
+                            77,
+                            42,
+                            234,
+                          ), // Primary red color
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -134,7 +142,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: _dotsAnimation.value == index
-                              ? const Color(0xFFEA2A33) // Primary red
+                              ? const Color.fromARGB(
+                                  255,
+                                  34,
+                                  11,
+                                  208,
+                                ) // Primary red
                               : const Color(0xFFD1D5DB), // gray-300
                         ),
                       );
