@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'features/auth/pages/splash_page.dart';
+import 'core/services/user_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize demo data
+  await UserService.addDemoData();
+
   runApp(const SehatSathiApp());
 }
 

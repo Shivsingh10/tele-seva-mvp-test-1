@@ -3,6 +3,7 @@ import '../../patient/pages/patient_home_page.dart';
 import '../../doctor/pages/doctor_home_page.dart';
 import '../../hospital_staff/pages/hospital_staff_home_page.dart';
 import '../../pharmacist/pages/pharmacist_home_page.dart';
+import 'register_page.dart';
 
 class CommonLoginPage extends StatefulWidget {
   const CommonLoginPage({super.key});
@@ -16,6 +17,8 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _loginFormKey = GlobalKey();
 
   final List<Map<String, dynamic>> roles = [
     {
@@ -38,7 +41,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
       'id': 'hospital_staff',
       'title': 'Hospital Staff',
       'subtitle': 'Admin & support staff',
-      'icon': Icons.local_hospital,
+      'icon': Icons.business_center,
       'image':
           'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=400&h=300&fit=crop',
     },
@@ -46,7 +49,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
       'id': 'pharmacist',
       'title': 'Pharmacist',
       'subtitle': 'Dispensing medications',
-      'icon': Icons.medication,
+      'icon': Icons.local_pharmacy,
       'image':
           'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=300&fit=crop',
     },
@@ -56,6 +59,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -72,6 +76,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
             // Main Content
             Expanded(
               child: SingleChildScrollView(
+                controller: _scrollController,
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +102,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
                     const SizedBox(height: 32),
 
                     // Login Form
-                    _buildLoginForm(),
+                    Container(key: _loginFormKey, child: _buildLoginForm()),
                   ],
                 ),
               ),
@@ -126,7 +131,7 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
                 ),
               ),
               const Text(
-                'TeleHealth',
+                'Sehat Sathi',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -190,6 +195,10 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
           onTap: () {
             setState(() {
               selectedRole = role['id'];
+            });
+            // Call scroll with a slight delay to ensure state update completes
+            Future.delayed(const Duration(milliseconds: 200), () {
+              _scrollToLoginForm();
             });
           },
           child: Container(
@@ -399,31 +408,94 @@ class _CommonLoginPageState extends State<CommonLoginPage> {
           const SizedBox(height: 24),
 
           // Sign Up Link
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Don't have an account? ",
-                style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
-              ),
-              TextButton(
-                onPressed: () {
-                  // TODO: Navigate to sign up
-                },
-                child: const Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    color: Color(0xFFEA2A33),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Don't have an account? ",
+                  style: TextStyle(color: Color(0xFF6B7280), fontSize: 14),
+                ),
+                TextButton(
+                  onPressed: () {
+                    print('Sign Up button pressed'); // Debug output
+                    try {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterPage(),
+                        ),
+                      );
+                      print(
+                        'Navigation to RegisterPage successful',
+                      ); // Debug output
+                    } catch (e) {
+                      print('Navigation error: $e'); // Debug output
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    minimumSize: const Size(
+                      80,
+                      40,
+                    ), // Ensure minimum tappable size
+                  ),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Color(0xFFEA2A33),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _scrollToLoginForm() {
+    print('_scrollToLoginForm called'); // Debug output
+
+    // Try multiple approaches for better compatibility
+    Future.delayed(const Duration(milliseconds: 100), () {
+      // Approach 1: Try ensureVisible if context exists
+      if (_loginFormKey.currentContext != null) {
+        print('Using ensureVisible approach'); // Debug output
+        try {
+          Scrollable.ensureVisible(
+            _loginFormKey.currentContext!,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut,
+            alignment: 0.3, // Show login form in the lower part of the screen
+          );
+          return;
+        } catch (e) {
+          print('ensureVisible failed: $e'); // Debug output
+        }
+      }
+
+      // Approach 2: Fallback to scroll controller
+      if (_scrollController.hasClients) {
+        print('Using scrollController approach'); // Debug output
+        try {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent * 0.8,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOut,
+          );
+        } catch (e) {
+          print('scrollController failed: $e'); // Debug output
+        }
+      }
+    });
   }
 
   void _handleLogin() {

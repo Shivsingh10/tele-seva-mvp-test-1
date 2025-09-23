@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'hospital_staff_profile_page.dart';
 import '../../auth/pages/common_login.dart';
+import '../../../core/widgets/user_count_widget.dart';
 
 class HospitalStaffHomePage extends StatelessWidget {
   final String userName;
@@ -28,6 +29,9 @@ class HospitalStaffHomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // User Statistics Dashboard
+                  const UserCountDashboard(showTotal: true),
+                  const SizedBox(height: 24),
                   _buildHospitalStats(),
                   const SizedBox(height: 24),
                   _buildBedManagement(),

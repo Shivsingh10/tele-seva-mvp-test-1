@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
 import 'patient_profile_page.dart';
 import '../../auth/pages/common_login.dart';
+import '../../../core/widgets/user_count_widget.dart';
+import '../../health_services/pages/emergency_call_page.dart';
+import '../../health_services/pages/book_appointment_page.dart';
+import '../../health_services/pages/video_consultation_page.dart';
+import '../../health_services/pages/ai_health_assistant_page.dart';
+import '../../health_services/pages/find_doctors_page.dart';
+import '../../health_services/pages/pharmacy_locator_page.dart';
+import '../../health_services/pages/health_records_page.dart';
+import '../../health_services/pages/hospital_info_page.dart';
 
 class PatientHomePage extends StatelessWidget {
   final String userName;
@@ -28,6 +37,9 @@ class PatientHomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // User Statistics Dashboard
+                  const UserCountDashboard(showTotal: true),
+                  const SizedBox(height: 24),
                   _buildQuickActions(),
                   const SizedBox(height: 24),
                   _buildHealthServices(),
@@ -177,7 +189,14 @@ class PatientHomePage extends StatelessWidget {
                 'Emergency Call',
                 '🚨',
                 const Color(0xFFDC2626),
-                () {},
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EmergencyCallPage(),
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 16),
@@ -186,7 +205,14 @@ class PatientHomePage extends StatelessWidget {
                 'Book Appointment',
                 '📅',
                 const Color(0xFF16A34A),
-                () {},
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const BookAppointmentPage(),
+                    ),
+                  );
+                },
               ),
             ),
           ],
@@ -264,7 +290,58 @@ class PatientHomePage extends StatelessWidget {
               service['subtitle'] as String,
               service['icon'] as IconData,
               service['color'] as Color,
-              () {},
+              () {
+                switch (service['title']) {
+                  case 'Video Consultation':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const VideoConsultationPage(),
+                      ),
+                    );
+                    break;
+                  case 'AI Health Assistant':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AIHealthAssistantPage(),
+                      ),
+                    );
+                    break;
+                  case 'Find Doctors':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FindDoctorsPage(),
+                      ),
+                    );
+                    break;
+                  case 'Pharmacy Locator':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PharmacyLocatorPage(),
+                      ),
+                    );
+                    break;
+                  case 'Health Records':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HealthRecordsPage(),
+                      ),
+                    );
+                    break;
+                  case 'Hospital Info':
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HospitalInfoPage(),
+                      ),
+                    );
+                    break;
+                }
+              },
             );
           },
         ),
