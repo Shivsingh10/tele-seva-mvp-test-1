@@ -40,9 +40,9 @@ class PatientHomePage extends StatelessWidget {
                   // User Statistics Dashboard
                   const UserCountDashboard(showTotal: true),
                   const SizedBox(height: 24),
-                  _buildQuickActions(),
+                  _buildQuickActions(context),
                   const SizedBox(height: 24),
-                  _buildHealthServices(),
+                  _buildHealthServices(context),
                   const SizedBox(height: 24),
                   _buildRecentActivity(),
                 ],
@@ -169,7 +169,7 @@ class PatientHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickActions() {
+  Widget _buildQuickActions(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -221,7 +221,7 @@ class PatientHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildHealthServices() {
+  Widget _buildHealthServices(BuildContext context) {
     final services = [
       {
         'title': 'Video Consultation',
