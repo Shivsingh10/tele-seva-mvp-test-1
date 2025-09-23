@@ -98,7 +98,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
                     // App Title
                     const Text(
-                      'NABHA-SEVA',
+                      'SEHAT SATHI',
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.w700,

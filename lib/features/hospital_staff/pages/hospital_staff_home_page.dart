@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'hospital_staff_profile_page.dart';
+import '../../auth/pages/common_login.dart';
 
 class HospitalStaffHomePage extends StatelessWidget {
   final String userName;
@@ -17,7 +19,7 @@ class HospitalStaffHomePage extends StatelessWidget {
       body: Column(
         children: [
           // Header
-          _buildHeader(),
+          _buildHeader(context),
 
           // Main Content
           Expanded(
@@ -43,7 +45,7 @@ class HospitalStaffHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 50, 16, 16),
       decoration: const BoxDecoration(
@@ -79,7 +81,7 @@ class HospitalStaffHomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Nabha Civil Hospital',
+                    'Sehat Sathi Hospital',
                     style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
                   ),
                   Text(
@@ -96,6 +98,32 @@ class HospitalStaffHomePage extends StatelessWidget {
           ),
           Row(
             children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HospitalStaffProfilePage(
+                        userName: userName,
+                        userEmail: userEmail,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF3F4F6),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Icon(
+                    Icons.person_outline,
+                    color: Color(0xFF6B7280),
+                    size: 24,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -109,18 +137,18 @@ class HospitalStaffHomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFDC2626),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'STAFF',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+              GestureDetector(
+                onTap: () => _showLogoutDialog(context),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEA2A33).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Icon(
+                    Icons.logout,
+                    color: Color(0xFFEA2A33),
+                    size: 24,
                   ),
                 ),
               ),
@@ -629,6 +657,42 @@ class HospitalStaffHomePage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CommonLoginPage(),
+                  ),
+                  (route) => false,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFEA2A33),
+              ),
+              child: const Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

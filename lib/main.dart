@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'features/auth/pages/splash_page.dart';
 
 void main() {
-  runApp(const HealthConnectApp());
+  runApp(const SehatSathiApp());
 }
 
-class HealthConnectApp extends StatelessWidget {
-  const HealthConnectApp({super.key});
+class SehatSathiApp extends StatelessWidget {
+  const SehatSathiApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'HealthConnect',
+      title: 'Sehat Sathi',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: MaterialColor(0xFFEA2A33, const <int, Color>{
